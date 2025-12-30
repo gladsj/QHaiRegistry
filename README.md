@@ -11,6 +11,6 @@ Status of the Project
 1. Immunization: Running… ⚠️
 1. ImplantsAndSupplies: Need to Debug ❌
 1. Infections: Need to Debug ❌
-1. PatientAnsweredQuestions: 2091069 rows; 1m 36s
+1. PatientAnsweredQuestions: 2091069 rows; 1m 36s ✅
 1. RiskAssesment: Waiting for Suri to sent updated query ❌    
 1. Social History: Started Running at around 9 mins. But running infinitely so need to add a filter ⚠️
