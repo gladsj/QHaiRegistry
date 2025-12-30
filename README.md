@@ -8,7 +8,7 @@ Status of the Project
 1. Device: Queries (1st and 2nd version) returning 0 rows ⚠️
 1. Dialysis: 18,397 rows: 7s ✅
 1. EpisodeOfCare: We can use it from ICD ✅
-1. Immunization: Taking a long time to run. Currently pulling 5 years of data. Shorten and see if it works. ⚠️ 
+1. Immunization: Query works ✅, it just takes a long time to run 5 years of data. Check what we actually need. ⚠️ 
 1. ImplantsAndSupplies: Need to Debug ❌
 1. Infections: Need to Debug ❌
 1. PatientAnsweredQuestions: 2,091,069 rows; 1m 36s ✅
