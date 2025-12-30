@@ -12,5 +12,5 @@ Status of the Project
 1. ImplantsAndSupplies: Need to Debug - We believe it's a different in datatype between the SUP and IMP subqueries that get UNION'ed together.
 1. Infections: Need to Debug ❌
 1. PatientAnsweredQuestions: 2,091,069 rows; 1m 36s ✅
-1. RiskAssesment: Waiting for Suri to sent updated query ❌    
+1. RiskAssessment: Waiting for Suri to sent updated query ❌    
 1. Social History: Started Running at around 9 mins. But running infinitely so need to add a filter ⚠️
