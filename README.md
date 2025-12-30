@@ -9,8 +9,8 @@ Status of the Project
 1. Dialysis: 18,397 rows: 7s ✅
 1. EpisodeOfCare: We can use it from ICD ✅
 1. Immunization: Query works ✅, it just takes a long time to run 5 years of data. Check what we actually need. ⚠️ 
-1. ImplantsAndSupplies: Need to Debug - We believe it's a different in datatype between the SUP and IMP subqueries that get UNION'ed together.
-1. Infections: Need to Debug ❌
+1. ImplantsAndSupplies: Need to Debug ❌ - We believe it's a different in datatype between the SUP and IMP subqueries that get UNION'ed together.
+1. Infections: Need to Debug ❌ - We're not sure which column is causing the issue. Commenting out is creating new errors.
 1. PatientAnsweredQuestions: 2,091,069 rows; 1m 36s ✅
 1. RiskAssessment: Waiting for Suri to sent updated query ❌    
-1. Social History: Started Running at around 9 mins. But running infinitely so need to add a filter ⚠️
+1. Social History: Query works ✅, it just takes a long time to run 2 years of data. Check what we actually need. ⚠️
