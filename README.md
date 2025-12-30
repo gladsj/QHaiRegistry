@@ -5,7 +5,7 @@ Status of the Project
 1. Allergy: 71,841 rows: 1m 46s ✅
 1. CarePlan: 55,530 rows: 37m 9s ✅
 1. ClinicalResearch: 13,178 rows: 5s ✅
-1. Device: Queries (1st and 2nd version) returning 0 rows ⚠️
+1. Device: Queries (1st and 2nd version) returning 0 rows ❌
 1. Dialysis: 18,397 rows: 7s ✅
 1. EpisodeOfCare: We can use it from ICD ✅
 1. Immunization: Query works ✅, it just takes a long time to run 5 years of data. Check what we actually need. ⚠️ 
