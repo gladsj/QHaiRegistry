@@ -48,7 +48,7 @@ SELECT
     R.Reactions,
     -- Convert/normalize entered datetime to UTC and format as ISO-like string.
     TO_CHAR(
-      (FROM_TZ(CAST(A.ALRGY_ENTERED_DTTM AS TIMESTAMP), 'US/Eastern') AT TIME ZONE 'UTC'),
+      (FROM_TZ(CAST(A.ALRGY_ENTERED_DTTM AS TIMESTAMP), 'US/Central') AT TIME ZONE 'UTC'),
       'YYYY-MM-DD"T"HH24:MI:SS"Z"'
     ) AS ALLERGYENTEREDDATE
 FROM ALLERGY A

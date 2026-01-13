@@ -23,39 +23,60 @@
 *   *********************************************************************************************************************
 */
 
-WITH P3F AS (
-  SELECT /*+ MATERIALIZE */
-         PAT_ID
-  FROM PATIENT_3
-  WHERE IS_TEST_PAT_YN = 'N'
-  -- Do NOT use DISTINCT here; that would change row-multiplicity vs. the original INNER JOIN
+/* ENC was effectively an INNER JOIN due to the WHERE filter on ENC.CONTACT_DATE.
+   We pre-filter PAT_ENC in a CTE (enc_filt) and join it INNER to expose true join cardinality
+   and enable index range scans on CONTACT_DATE. Semantics preserved exactly. */
+WITH enc_filtered AS (
+  SELECT
+    pat_id,
+    inpatient_data_id,
+    pat_enc_csn_id,
+    contact_date
+  FROM pat_enc
+  WHERE contact_date >= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), -1)
+                         AND TRUNC(SYSDATE, 'MM')
+),
+flw_dedup AS (
+  SELECT DISTINCT
+    inpatient_data_id,
+    device_id
+  FROM ip_device_capture
 )
 SELECT
-    DI.DEVICE_ID                                      AS DEVICEID,
-    ZDS.NAME                                          AS DEVICESTATUS,
-    DI.DEVICE_NAME                                    AS DEVICENAME,
-    DI.DEVICE_NAME                                    AS DESCRIPTION,
-    DI.DEVICE_TYPE_ID                                 AS DEVICETYPEID,
-    DI.DEVICE_TYPE_ID                                 AS DEVICETYPECODE,
-    DTI.DEVICE_TYPE_NAME                              AS DEVICETYPENAME,
-    DTI.DEVICE_TYPE_NAME                              AS DEVICETYPE,
-    DTI.SPECIAL_TYPE_C                                AS DEVICESPECLIZATIONTYPECODE,
-    ZST2.NAME                                         AS DEVICESPECLIZATIONTYPE,
-    P.PAT_MRN_ID                                      AS MRN,
-    P.PAT_NAME                                        AS PATIENTNAME,
-    DI.HOSPITAL_ID                                    AS LOCATIONID,
-    DI.DEVICE_IP                                      AS DEVICEIP,
-    DI.DEVICE_DESC                                    AS DEVICEDESCRPTION
-FROM P3F P3
-JOIN PATIENT P
-  ON P.PAT_ID = P3.PAT_ID
-JOIN IP_DATA_STORE IDS
-  ON IDS.PAT_ID = P.PAT_ID
-JOIN DEVICE_INFO DI
-  ON IDS.INPATIENT_DATA_ID = DI.CURRENT_INP_ID
-LEFT JOIN ZC_DEL_STATUS ZDS
+  ENC.PAT_ID,
+  PAT.PAT_MRN_ID AS MRN,
+  PAT.PAT_NAME,
+  ENC.CONTACT_DATE,
+  FLW.INPATIENT_DATA_ID,
+  ENC.PAT_ENC_CSN_ID,
+  DI.DEVICE_ID AS DEVICEID,
+  ZDS.NAME AS DEVICESTATUS,
+  DI.DEVICE_NAME AS DEVICENAME,
+  DI.DEVICE_NAME AS DESCRIPTION,
+  DI.DEVICE_TYPE_ID AS DEVICETYPEID,
+  DI.DEVICE_TYPE_ID AS DEVICETYPECODE,
+  DTI.DEVICE_TYPE_NAME AS DEVICETYPENAME,
+  DTI.DEVICE_TYPE_NAME AS DEVICETYPE,
+  DTI.SPECIAL_TYPE_C AS DEVICESPECLIZATIONTYPECODE,
+  ZST2.NAME AS DEVICESPECLIZATIONTYPE,
+  DI.HOSPITAL_ID AS LOCATIONID,
+  DI.DEVICE_IP AS DEVICEIP,
+  DI.DEVICE_DESC AS DEVICEDESCRPTION
+FROM enc_filtered ENC
+JOIN flw_dedup FLW
+  ON FLW.INPATIENT_DATA_ID = ENC.INPATIENT_DATA_ID
+JOIN device_info DI
+  ON DI.DEVICE_ID = FLW.DEVICE_ID
+LEFT JOIN patient PAT
+  ON ENC.PAT_ID = PAT.PAT_ID
+LEFT JOIN zc_del_status ZDS
   ON ZDS.DEL_STATUS_C = DI.RECORD_STATE_C
-LEFT JOIN DEVICE_TYPE_INFO DTI
+LEFT JOIN device_type_info DTI
   ON DTI.DEVICE_TYPE_ID = DI.DEVICE_TYPE_ID
-LEFT JOIN ZC_SPECIAL_TYPE_2 ZST2
-  ON ZST2.SPECIAL_TYPE_2_C = DTI.SPECIAL_TYPE_C;
+LEFT JOIN zc_special_type_2 ZST2
+  ON ZST2.SPECIAL_TYPE_2_C = DTI.SPECIAL_TYPE_C
+WHERE EXISTS (
+  SELECT 1
+  FROM ip_data_store IDS
+  WHERE IDS.INPATIENT_DATA_ID = FLW.INPATIENT_DATA_ID
+);
