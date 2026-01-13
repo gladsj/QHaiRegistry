@@ -13,7 +13,7 @@
 9. ✅Supplies: 2460650 rows: 1m 5s
 10. ✅ Infections: 84556 rows; 4s
 11. ✅ PatientAnsweredQuestions: 2,091,069 rows; 1m 36s
-12.  RiskAssessment: Not part of Registry use case anyore
+12.  RiskAssessment: Not part of Registry use case anymore
 13. ✅ Social History: 86522373 rows: 6m 10s
 
 
