@@ -63,11 +63,11 @@ SELECT
     i.IMM_CSN                                    AS ENCOUNTERID,
     -- convert local (US/Eastern) timestamp to UTC and format ISO8601
     TO_CHAR(
-      (FROM_TZ(CAST(i.IMMUNE_DATE AS TIMESTAMP), 'US/Eastern') AT TIME ZONE 'UTC'),
+      (FROM_TZ(CAST(i.IMMUNE_DATE AS TIMESTAMP), 'US/Central') AT TIME ZONE 'UTC'),
       'YYYY-MM-DD"T"HH24:MI:SS"Z"'
     )                                            AS IMMUNIZATIONDATE,
     TO_CHAR(
-      (FROM_TZ(CAST(i.ENTRY_DATE AS TIMESTAMP), 'US/Eastern') AT TIME ZONE 'UTC'),
+      (FROM_TZ(CAST(i.ENTRY_DATE AS TIMESTAMP), 'US/Central') AT TIME ZONE 'UTC'),
       'YYYY-MM-DD"T"HH24:MI:SS"Z"'
     )                                            AS IMMUNIZATIONENTRYDATE,
     i.PHYSICAL_SITE                              AS IMMMUNIZATIONSITE,

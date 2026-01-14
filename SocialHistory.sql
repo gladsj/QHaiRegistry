@@ -62,7 +62,7 @@ base_sh AS (
         PAT_ENC.PAT_ID,
         PAT.PAT_MRN_ID as MRN,
         CAST(s.PAT_ENC_CSN_ID            AS VARCHAR2(4000)) as PAT_ENC_CSN_ID,
-        TO_CHAR( (FROM_TZ(CAST(s.CONTACT_DATE AS TIMESTAMP), 'America/New_York') AT TIME ZONE 'UTC'),
+        TO_CHAR( (FROM_TZ(CAST(s.CONTACT_DATE AS TIMESTAMP), 'US/Central') AT TIME ZONE 'UTC'),
                  'YYYY-MM-DD"T"HH24:MI:SS"Z"')                                   AS InputDate,
         CAST(s.ABSTINENCE_YN            AS VARCHAR2(4000)) as ABSTINENCE_YN,
         CAST(s.CIGARETTES_YN            AS VARCHAR2(4000)) as CIGARETTES_YN,
